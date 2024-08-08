@@ -23,8 +23,8 @@ func main() {
 			break
 		}
 
-		if boardvalidator.IsAllFilled(&board) {
-			fmt.Printf("No more positions to fill")
+		if boardvalidator.IsTie(&board) {
+			fmt.Printf("Tie!!")
 			break
 		}
 
