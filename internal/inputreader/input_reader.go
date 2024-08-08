@@ -23,12 +23,12 @@ func ReadPosition() (int, int, error) {
 
 	row, err := strconv.Atoi(parts[0])
 	if err != nil {
-		return 0, 0, errors.New("error parsing row at position")
+		return 0, 0, errors.New("error parsing row at given position")
 	}
 
 	column, err := strconv.Atoi(parts[1])
 	if err != nil {
-		return 0, 0, errors.New("error parsing column at position")
+		return 0, 0, errors.New("error parsing column at given position")
 	}
 
 	return row, column, nil
