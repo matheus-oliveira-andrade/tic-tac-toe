@@ -17,7 +17,7 @@ func ReadPosition() (int, int, error) {
 
 	parts := strings.Split(position, ",")
 
-	if len(parts) > 2 {
+	if len(parts) != 2 {
 		return 0, 0, errors.New("invalid format of position")
 	}
 
