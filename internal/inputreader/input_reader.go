@@ -8,7 +8,6 @@ import (
 )
 
 func ReadPosition() (int, int, error) {
-	fmt.Printf("Type a position (e.a: 1,1): ")
 	position := ""
 	_, err := fmt.Scanln(&position)
 	if err != nil {

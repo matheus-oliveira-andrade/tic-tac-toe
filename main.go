@@ -22,10 +22,10 @@ func main() {
 
 	utils.ClearTerminal()
 
-	playGame(CreateBoard(), withComputerPlayer)
+	ticTacToe(CreateBoard(), withComputerPlayer)
 }
 
-func playGame(board [3][3]string, playWithComputer bool) {
+func ticTacToe(board [3][3]string, playWithComputer bool) {
 	var playerTurn string
 
 	for {
@@ -67,6 +67,8 @@ func playGame(board [3][3]string, playWithComputer bool) {
 func RequestPosition(board *[3][3]string) (int, int) {
 	var row, column int
 	var err error
+
+	fmt.Printf("Type a position (e.a: 1,1): ")
 
 	for {
 		row, column, err = inputreader.ReadPosition()
