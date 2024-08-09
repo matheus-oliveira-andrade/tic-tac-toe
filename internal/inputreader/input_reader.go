@@ -33,3 +33,21 @@ func ReadPosition() (int, int, error) {
 
 	return row, column, nil
 }
+
+func ReadYesOrNot() (bool, error) {
+	answer := ""
+	_, err := fmt.Scanln(&answer)
+	if err != nil {
+		return false, errors.New("invalid answer")
+	}
+
+	if answer == "n" || answer == "N" {
+		return false, nil
+	}
+
+	if answer == "y" || answer == "Y" {
+		return true, nil
+	}
+
+	return false, errors.New("invalid answer")
+}

@@ -2,23 +2,26 @@ package boardvalidator
 
 import "github.com/matheus-oliveira-andrade/tic-tac-toe/config/constants"
 
-func HasAWinner(board *[3][3]string) bool {
-	if hasWinnerInRows(board) {
-		return true
+func HasAWinner(board *[3][3]string) (bool, string) {
+	var success bool
+	var player string
+
+	if success, player = hasWinnerInRows(board); success {
+		return true, player
 	}
 
-	if hasWinnerInColumns(board) {
-		return true
+	if success, player = hasWinnerInColumns(board); success {
+		return true, player
 	}
 
-	if hasInDiagonalsWinner(board) {
-		return true
+	if success, player = hasInDiagonalsWinner(board); success {
+		return true, player
 	}
 
-	return false
+	return false, ""
 }
 
-func hasWinnerInRows(board *[3][3]string) bool {
+func hasWinnerInRows(board *[3][3]string) (bool, string) {
 	var lastViewedPlayer string
 	var times int
 
@@ -26,19 +29,19 @@ func hasWinnerInRows(board *[3][3]string) bool {
 		for c := range a {
 			if lastViewedPlayer == "" {
 				lastViewedPlayer = board[r][c]
-				times++
+				times = 1
 				continue
 			}
 
 			if board[r][c] == lastViewedPlayer {
 				times++
 			} else {
-				times = 0
 				lastViewedPlayer = board[r][c]
+				times = 1
 			}
 
 			if times == 3 {
-				return true
+				return true, lastViewedPlayer
 			}
 		}
 
@@ -46,10 +49,10 @@ func hasWinnerInRows(board *[3][3]string) bool {
 		times = 0
 	}
 
-	return false
+	return false, ""
 }
 
-func hasWinnerInColumns(board *[3][3]string) bool {
+func hasWinnerInColumns(board *[3][3]string) (bool, string) {
 	for c := 0; c < 3; c++ {
 		lastViewedPlayer := ""
 		times := 0
@@ -69,15 +72,15 @@ func hasWinnerInColumns(board *[3][3]string) bool {
 			}
 
 			if times == 3 {
-				return true
+				return true, lastViewedPlayer
 			}
 		}
 	}
 
-	return false
+	return false, ""
 }
 
-func hasInDiagonalsWinner(board *[3][3]string) bool {
+func hasInDiagonalsWinner(board *[3][3]string) (bool, string) {
 	lastViewedPlayer := ""
 	times := 0
 
@@ -100,7 +103,7 @@ func hasInDiagonalsWinner(board *[3][3]string) bool {
 		}
 
 		if times == 3 {
-			return true
+			return true, lastViewedPlayer
 		}
 
 	}
@@ -110,29 +113,27 @@ func hasInDiagonalsWinner(board *[3][3]string) bool {
 	times = 0
 
 	for rowIdx := range board {
-		if board[rowIdx][rowIdx] == "" {
+		if board[rowIdx][columnCounter] == "" {
+			columnCounter--
 			continue
 		}
 
 		if lastViewedPlayer == "" {
 			lastViewedPlayer = board[rowIdx][columnCounter]
-			times++
-			continue
-		}
-
-		if board[rowIdx][columnCounter] == lastViewedPlayer {
+			times = 1
+		} else if board[rowIdx][columnCounter] == lastViewedPlayer {
 			times++
 		} else {
-			times = 0
+			times = 1
 			lastViewedPlayer = board[rowIdx][columnCounter]
 		}
 
 		if times == 3 {
-			return true
+			return true, lastViewedPlayer
 		}
 
 		columnCounter--
 	}
 
-	return false
+	return false, ""
 }

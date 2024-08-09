@@ -2,6 +2,7 @@ package constants
 
 const (
 	PlayerOne = "X"
-	PlayerTwo = "Y"
+	PlayerTwo = "O"
+	Computer  = PlayerTwo
 	BoardSize = 3
 )

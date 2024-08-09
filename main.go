@@ -5,6 +5,7 @@ import (
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/config/constants"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/boarddrawer"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/boardvalidator"
+	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/computerplayer"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/inputreader"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/playerturn"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/winnerdrawer"
@@ -12,12 +13,23 @@ import (
 	"time"
 )
 
+func CreateBoard() [constants.BoardSize][constants.BoardSize]string {
+	return [constants.BoardSize][constants.BoardSize]string{}
+}
+
 func main() {
-	board := [constants.BoardSize][constants.BoardSize]string{}
+	withComputerPlayer := ReadPlayWithComputerPlayer()
+
+	utils.ClearTerminal()
+
+	playGame(CreateBoard(), withComputerPlayer)
+}
+
+func playGame(board [3][3]string, playWithComputer bool) {
 	var playerTurn string
 
 	for {
-		if boardvalidator.HasAWinner(&board) {
+		if hasWinner, _ := boardvalidator.HasAWinner(&board); hasWinner {
 			boarddrawer.Draw(&board, playerTurn, true)
 			winnerdrawer.Draw(playerTurn)
 			break
@@ -32,7 +44,16 @@ func main() {
 
 		boarddrawer.Draw(&board, playerTurn, false)
 
-		row, column := RequestPosition(&board)
+		var row, column int
+
+		if playWithComputer && playerTurn == constants.PlayerTwo {
+			fmt.Printf("\n%v playing....\n", playerTurn)
+			time.Sleep(1 * time.Second)
+
+			row, column = computerplayer.GetBestPosition(&board)
+		} else {
+			row, column = RequestPosition(&board)
+		}
 
 		board[row][column] = playerTurn
 
@@ -44,8 +65,7 @@ func main() {
 }
 
 func RequestPosition(board *[3][3]string) (int, int) {
-	var row int
-	var column int
+	var row, column int
 	var err error
 
 	for {
@@ -65,4 +85,18 @@ func RequestPosition(board *[3][3]string) (int, int) {
 	}
 
 	return row, column
+}
+
+func ReadPlayWithComputerPlayer() bool {
+	fmt.Printf("Would you like to play against the computer? (y/n): ")
+
+	for {
+		answer, err := inputreader.ReadYesOrNot()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		return answer
+	}
 }
