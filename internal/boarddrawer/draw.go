@@ -3,10 +3,11 @@ package boarddrawer
 import "fmt"
 
 func Draw(board *[3][3]string, playerTurn string, gameFinished bool) {
-	fmt.Println("+---+---+---+")
+	fmt.Println("    0   1   2  ")
+	fmt.Println("  +---+---+---+")
 
 	for i, a := range board {
-		fmt.Print("|")
+		fmt.Print(i, " ", "|")
 
 		for j := range a {
 			if board[i][j] == "" {
@@ -17,7 +18,7 @@ func Draw(board *[3][3]string, playerTurn string, gameFinished bool) {
 		}
 
 		fmt.Print("\n")
-		fmt.Println("+---+---+---+")
+		fmt.Println("  +---+---+---+")
 	}
 
 	if !gameFinished {
