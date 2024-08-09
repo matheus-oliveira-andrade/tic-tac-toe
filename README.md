@@ -1,5 +1,5 @@
-### Tic tac toe
-Implementation of tic tac toe in go lang with interation by terminal
+### Tic-tac-toe
+Implementation of tic-tac-toe in Go with interaction by terminal
 
 ### Features
 - Play against another human player.
