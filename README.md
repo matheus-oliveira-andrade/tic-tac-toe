@@ -7,7 +7,7 @@ Implementation of tic-tac-toe in Go with interaction by terminal
 
 ### How to run
 ```bash
-go run main.go 
+go run cmd/main.go 
 ```
 
 ```bash
