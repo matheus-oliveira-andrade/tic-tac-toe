@@ -7,9 +7,13 @@ Implementation of tic-tac-toe in Go with interaction by terminal
 
 ### How to run
 ```bash
-go run cmd/main.go 
+make run 
+# OR
+# go run cmd/main.go 
 ```
 
 ```bash
-go test ./... -v 
+make test
+# OR
+# go test ./... -v 
 ```
