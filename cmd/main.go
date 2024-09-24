@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/config/constants"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/boarddrawer"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/boardvalidator"
@@ -10,22 +12,21 @@ import (
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/playerturn"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/winnerdrawer"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/utils"
-	"time"
 )
 
-func CreateBoard() [constants.BoardSize][constants.BoardSize]string {
+func newBoard() [constants.BoardSize][constants.BoardSize]string {
 	return [constants.BoardSize][constants.BoardSize]string{}
 }
 
 func main() {
-	withComputerPlayer := ReadPlayWithComputerPlayer()
+	againsComputer := readPlayWithComputerPlayer()
 
 	utils.ClearTerminal()
 
-	ticTacToe(CreateBoard(), withComputerPlayer)
+	playGame(newBoard(), againsComputer)
 }
 
-func ticTacToe(board [3][3]string, playWithComputer bool) {
+func playGame(board [3][3]string, againsComputer bool) {
 	var playerTurn string
 
 	for {
@@ -40,28 +41,30 @@ func ticTacToe(board [3][3]string, playWithComputer bool) {
 			break
 		}
 
-		playerTurn = playerturn.GetPlayerTurn(playerTurn)
-
 		boarddrawer.Draw(&board, playerTurn, false)
 
-		var row, column int
+		playerTurn = playerturn.GetPlayerTurn(playerTurn)
 
-		if playWithComputer && playerTurn == constants.PlayerTwo {
-			fmt.Printf("\n%v playing....\n", playerTurn)
-			time.Sleep(1 * time.Second)
-
-			row, column = computerplayer.GetBestPosition(&board)
-		} else {
-			row, column = RequestPosition(&board)
-		}
-
-		board[row][column] = playerTurn
-
-		fmt.Printf("\nplayer %v assigned in position (%v)\n", playerTurn, fmt.Sprintf("%v, %v", row, column))
+		executePlayerTurn(&board, playerTurn, againsComputer)
 
 		time.Sleep(1 * time.Second)
 		utils.ClearTerminal()
 	}
+}
+
+func executePlayerTurn(board *[3][3]string, playerTurn string, againsComputer bool) {
+	var row, column int
+	if againsComputer && playerTurn == constants.PlayerTwo {
+		fmt.Printf("\n%v playing....\n", playerTurn)
+		time.Sleep(1 * time.Second)
+
+		row, column = computerplayer.GetBestPosition(board)
+	} else {
+		row, column = RequestPosition(board)
+	}
+
+	board[row][column] = playerTurn
+	fmt.Printf("\nplayer %v assigned in position (%v)\n", playerTurn, fmt.Sprintf("%v, %v", row, column))
 }
 
 func RequestPosition(board *[3][3]string) (int, int) {
@@ -89,7 +92,7 @@ func RequestPosition(board *[3][3]string) (int, int) {
 	return row, column
 }
 
-func ReadPlayWithComputerPlayer() bool {
+func readPlayWithComputerPlayer() bool {
 	fmt.Printf("Would you like to play against the computer? (y/n): ")
 
 	for {
