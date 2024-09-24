@@ -1,10 +1,10 @@
 package computerplayer
 
 import (
-	"fmt"
+	"math"
+
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/config/constants"
 	"github.com/matheus-oliveira-andrade/tic-tac-toe/internal/boardvalidator"
-	"math"
 )
 
 func GetBestPosition(board *[3][3]string) (int, int) {
@@ -21,14 +21,10 @@ func GetBestPosition(board *[3][3]string) (int, int) {
 			score := miniMax(board, 0, false)
 			board[r][c] = ""
 
-			fmt.Println("Actual score: ", score, r, c)
-
 			if score > bestScore {
 				bestScore = score
 				bestRow = r
 				bestColumn = c
-
-				fmt.Println("New best score: ", bestScore, r, c)
 			}
 		}
 	}
